@@ -14,7 +14,7 @@ span {
   margin-bottom: 1.5rem;
 }
 
-.todo.status span {
+.checked {
   text-decoration: line-through;
 }
 
@@ -28,12 +28,13 @@ span {
   padding: 1rem;
 }
 
-.todo i {
-  z-index: 2;
+.todo button {
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
 }
 
-.todo i:hover {
-  padding: 5px;
+.todo button:hover {
   background-color: lightblue;
-  border: 1px solid red;
+  cursor: pointer;
 }

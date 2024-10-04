@@ -1,10 +1,10 @@
 import Item from './Item';
 
-export default function List({ tasks }) {
+export default function List({ tasks, deleteTask }) {
   return (
     <ul>
-      {tasks.map(item => (
-        <Item key={item.id} {...item} />
+      {tasks.map(task => (
+        <Item task={task} key={task.id} deleteTask={deleteTask} />
       ))}
     </ul>
   );
