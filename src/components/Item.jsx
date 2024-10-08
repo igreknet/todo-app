@@ -18,7 +18,6 @@ export default function Item({ id, status, title, date, deleteTask, tasks, onSet
         }
         return el;
       });
-      onSetTask(updatedTodos);
       localStorage.setItem('tasks', JSON.stringify(updatedTodos));
       return !prevChecked;
     });
@@ -31,7 +30,7 @@ export default function Item({ id, status, title, date, deleteTask, tasks, onSet
   function handleSaveEditedTodo() {
     const updatedTodo = tasks.map(task => {
       if (task.id === id) {
-        return { ...task, title: editTitle };
+        return { ...task, title: editTitle, status: task.status };
       }
       return task;
     });

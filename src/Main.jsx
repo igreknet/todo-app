@@ -13,11 +13,6 @@ export default function Main() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  useEffect(() => {
-    const incompleteTasksCount = tasks.filter(task => !task.status).length;
-    document.title = `Uncomplited tasks: ${incompleteTasksCount}`;
-  }, [tasks]);
-
   const addTask = e => {
     if (e.key === 'Enter' && e.target.value !== '') {
       setTasks(prevTasks => [
@@ -63,13 +58,10 @@ export default function Main() {
   const day = date.getDate();
   const year = date.getFullYear();
 
-  const incompleteTasksCount = tasks.filter(task => !task.status).length;
-
   return (
     <div className="container">
       <h1>Todo</h1>
       <span>{month + ' ' + day + ', ' + year}</span>
-      <p>Uncomplited tasks: {incompleteTasksCount}</p>
 
       <div className="input-field">
         <input
