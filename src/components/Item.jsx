@@ -1,27 +1,67 @@
 import { useState } from 'react';
 
-export default function Item({ task, deleteTask }) {
-  const [checked, setChecked] = useState(task.status);
+export default function Item({ id, status, title, date, deleteTask, tasks, onSetTask }) {
+  const [checked, setChecked] = useState(status);
+  const [editable, setEditable] = useState(false);
+  const [editTitle, setEditTitle] = useState(title);
+
+  const formattedDate = new Date(date).toLocaleString();
 
   function updateStatus() {
-    setChecked(!checked);
-    const storedTodos = JSON.parse(localStorage.getItem('tasks'));
-    storedTodos.map(el => {
-      if (el.id === task.id) {
-        el.status = !checked;
-      }
-      return true;
+    setChecked(prevChecked => {
+      const updatedTodos = tasks.map(el => {
+        if (el.id === id) {
+          return {
+            ...el,
+            status: !prevChecked,
+          };
+        }
+        return el;
+      });
+      onSetTask(updatedTodos);
+      localStorage.setItem('tasks', JSON.stringify(updatedTodos));
+      return !prevChecked;
     });
-    localStorage.setItem('tasks', JSON.stringify(storedTodos));
+  }
+
+  function handleEditTodo() {
+    setEditable(!editable);
+  }
+
+  function handleSaveEditedTodo() {
+    const updatedTodo = tasks.map(task => {
+      if (task.id === id) {
+        return { ...task, title: editTitle };
+      }
+      return task;
+    });
+    onSetTask(updatedTodo);
+    localStorage.setItem('tasks', JSON.stringify(updatedTodo));
+    setEditable(false);
   }
 
   return (
     <li className="todo">
       <label>
-        <input type="checkbox" onChange={updateStatus} checked={checked} />
-        <span className={checked ? ' checked' : ''}>{task.title}</span>
-        <button type="button" onClick={() => deleteTask(task.id)}>
-          ❌
+        {editable ? (
+          <>
+            <input type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)} />
+            <button className="edit-btn" type="button" onClick={handleSaveEditedTodo}>
+              💾 Save
+            </button>
+          </>
+        ) : (
+          <>
+            <input type="checkbox" onChange={updateStatus} checked={checked} />
+            <span className={checked ? ' checked' : ''}>{title}</span>
+            <button className="edit-btn" type="button" onClick={handleEditTodo}>
+              ✍️ Edit
+            </button>
+          </>
+        )}
+        <p>Created at: {formattedDate}</p>
+        <button type="button" onClick={() => deleteTask(id)}>
+          ❌ Delete
         </button>
       </label>
     </li>

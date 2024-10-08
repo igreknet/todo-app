@@ -13,19 +13,25 @@ export default function Main() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  function addTask(e) {
+  useEffect(() => {
+    const incompleteTasksCount = tasks.filter(task => !task.status).length;
+    document.title = `Uncomplited tasks: ${incompleteTasksCount}`;
+  }, [tasks]);
+
+  const addTask = e => {
     if (e.key === 'Enter' && e.target.value !== '') {
-      setTasks([
-        ...tasks,
+      setTasks(prevTasks => [
+        ...prevTasks,
         {
           id: uuidv4(),
           title: tasksTitle,
           status: false,
+          date: new Date(),
         },
       ]);
       setTasksTitle('');
     }
-  }
+  };
 
   function handleDeleteTask(id) {
     const storedTodos = JSON.parse(localStorage.getItem('tasks'));
@@ -57,10 +63,13 @@ export default function Main() {
   const day = date.getDate();
   const year = date.getFullYear();
 
+  const incompleteTasksCount = tasks.filter(task => !task.status).length;
+
   return (
     <div className="container">
-      <h1>Note your tasks</h1>
+      <h1>Todo</h1>
       <span>{month + ' ' + day + ', ' + year}</span>
+      <p>Uncomplited tasks: {incompleteTasksCount}</p>
 
       <div className="input-field">
         <input
@@ -71,7 +80,7 @@ export default function Main() {
         />
         <label htmlFor="">Task name</label>
       </div>
-      <List tasks={tasks} deleteTask={handleDeleteTask} />
+      <List tasks={tasks} deleteTask={handleDeleteTask} onSetTask={setTasks} />
     </div>
   );
 }
