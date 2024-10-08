@@ -52,13 +52,13 @@ export default function Item({ id, status, title, date, deleteTask, tasks, onSet
         ) : (
           <>
             <input type="checkbox" onChange={updateStatus} checked={checked} />
-            <span className={checked ? ' checked' : ''}>{title}</span>
+            <span className={checked ? 'checked' : ''}>{title}</span>
+            <p className="timing">Created at: {formattedDate}</p>
             <button className="edit-btn" type="button" onClick={handleEditTodo}>
               ✍️ Edit
             </button>
           </>
         )}
-        <p>Created at: {formattedDate}</p>
         <button type="button" onClick={() => deleteTask(id)}>
           ❌ Delete
         </button>

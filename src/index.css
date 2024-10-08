@@ -34,6 +34,13 @@ span {
   padding: 5px;
 }
 
+.timing {
+  font-size: 1rem;
+  /* font-weight: bold; */
+  margin: 0;
+  margin-left: 20px;
+}
+
 .edit-btn {
   margin-left: auto;
   margin-right: 10px;
